@@ -6,7 +6,7 @@ import './assets/css/main.css'
 App.mpType = 'app'
 
 // api请求网址
-Vue.prototype.ApiUrl="http://1x4849h005.iok.la:8899/"
+Vue.prototype.ApiUrl="https://gzmss.iok.la/"
 
 
 const app = new Vue({
