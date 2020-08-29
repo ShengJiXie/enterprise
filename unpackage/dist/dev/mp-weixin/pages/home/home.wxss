@@ -1,0 +1,16 @@
+
+.guankan text {
+	font-size: 24rpx;
+	color: #313131;
+	margin-left: 10rpx;
+}
+.submitbutton {
+	width: 100%;
+	margin: 20rpx auto;
+	height: 88rpx;
+	border-radius: 10rpx;
+	background: #1775e6;
+	color: #fff;
+	font-size: 30rpx;
+}
+

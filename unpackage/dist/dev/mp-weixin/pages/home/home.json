@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "企业前景测评",
+  "usingComponents": {
+    "mpvue-echarts": "/components/mpvue-echarts/src/echarts"
+  }
+}
