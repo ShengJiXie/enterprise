@@ -47,7 +47,7 @@
 
 				<h3>实缴注册资金</h3>
 				<div class="input_box flex a-center jlr">
-					<input type="number" v-model.number="ApiData.Required.registered_capital" placeholder="请输入资金" />
+					<input type="digit" min="3.00" max="999999999.00" v-model.number="ApiData.Required.registered_capital" placeholder="请输入资金" />
 					<em>万元</em>
 				</div>
 
@@ -59,7 +59,7 @@
 
 				<h3>年营业收入</h3>
 				<div class="input_box flex a-center jlr">
-					<input type="number" placeholder="请输入年收入" v-model.number="ApiData.Required.output_value" />
+					<input type="digit" placeholder="请输入年收入" v-model.number="ApiData.Required.output_value" />
 					<em>万元</em>
 				</div>
 
@@ -68,12 +68,12 @@
 					<span>（净利润，可输入负数）</span>
 				</h3>
 				<div class="input_box flex a-center jlr">
-					<input type="number" placeholder="请输入利润率" v-model.number="ApiData.Required.profit_margin" />
+					<input type="text" placeholder="请输入利润率" v-model="jfushu" />
 					<em>%</em>
 				</div>
 				<h3>年科研经费占营收比例</h3>
 				<div class="input_box flex a-center jlr">
-					<input type="number" placeholder="请输入比例" v-model.number="ApiData.Required.Investment_funds" />
+					<input type="digit" placeholder="请输入比例" v-model.number="ApiData.Required.Investment_funds" />
 					<em>%</em>
 				</div>
 			</div>
@@ -175,7 +175,8 @@
 				fuye:"",
 				dqfy:"",
 				dqfyArr:[],
-				fushu:0
+				fushu:0,
+				jfushu:0
 
 			};
 		},
@@ -185,6 +186,7 @@
 			},
 			close() {
 				console.log(this.fushu)
+			
 				if(/^-[1-9][0-9]/.test(this.fushu)){
 					this.ApiData.optional[2].Debt_ratio=this.fushu;
 				}else{
@@ -308,6 +310,12 @@
 			},
 			// 数据验证
 			yanzheng() {
+				if(/^-[1-9][0-9]/.test(this.jfushu)){
+					this.ApiData.Required.profit_margin=this.jfushu;
+				}else{
+				    this.ApiData.Required.profit_margin=0;
+				}
+			
 				var _this = this;
 				uni.request({
 					url: _this.ApiUrl + "api/v5/Tik_Tok/post_test",
@@ -364,8 +372,6 @@
 		},
 		mounted() {
 			this.ajaxApi();
-			console.log(this.IyArr)
-			console.log(this.HyArr)
 		},
 	};
 </script>
