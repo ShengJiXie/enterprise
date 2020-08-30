@@ -114,7 +114,7 @@
 					</div>
 				</picker>
 				<div class="input flex a-center" v-if="ApiData.optional[1].type!=null">
-					<input type="number" v-model.number="fushu" />
+					<input type="text" v-model.number="fushu" />
 					<em>%</em>
 				</div>
 			</div>
