@@ -11,11 +11,18 @@
 		<div class="formbox">
 			<div class="formbox_con">
 				<h3>地区选择</h3>
-				<picker mode="selector" @change="regionClick" :value="index" :range="HyArr" range-key="text">
+				<view style="display:flex">
+				<picker mode="selector" @change="regionClick" :value="index" style='width:50%'  :range="HyArr" range-key="text">
 					<div class="input_box select flex a-center jlr">
-						<view>{{ApiData.Required.adcode==0 ? "请选择地区" :diqu}}</view>
+						<view>{{ApiData.Required.adcode==0 ? "请选择省份" :diqu}}</view>
 					</div>
 				</picker>
+				<picker mode="selector" @change="dqfyClick" :value="index" style='width:50%'  :range="dqfyArr" range-key="text">
+					<div class="input_box select flex a-center jlr">
+						<view>{{dqfy=="" ? "请选择市区" :dqfy}}</view>
+					</div>
+				</picker>
+				</view>
 				<h3>行业选择</h3>
 				<view style="display:flex">
 
@@ -107,7 +114,7 @@
 					</div>
 				</picker>
 				<div class="input flex a-center" v-if="ApiData.optional[1].type!=null">
-					<input type="number" v-model.number="ApiData.optional[1].Debt_ratio" />
+					<input type="number" v-model.number="fushu" />
 					<em>%</em>
 				</div>
 			</div>
@@ -121,7 +128,7 @@
 					</div>
 				</picker>
 				<div class="input flex a-center" v-if="ApiData.optional[2].type!=null">
-					<input type="number" v-model.number="ApiData.optional[2].Debt_ratio" />
+					<input type="number" v-model="ApiData.optional[2].Debt_ratio" />
 					<em>%</em>
 				</div>
 			</div>
@@ -165,7 +172,10 @@
 				diqu: "",
 				zhiye: "",
 				fuyeArr:[],
-				fuye:""
+				fuye:"",
+				dqfy:"",
+				dqfyArr:[],
+				fushu:0
 
 			};
 		},
@@ -174,7 +184,14 @@
 				this.fix = true;
 			},
 			close() {
-				this.fix = false;
+				console.log(this.fushu)
+				if(/^-[1-9][0-9]/.test(this.fushu)){
+					this.ApiData.optional[2].Debt_ratio=this.fushu;
+				}else{
+					this.ApiData.optional[2].Debt_ratio=0;
+				}
+					this.fix = false;
+				
 			},
 			// 日期选择
 			dateClick(event) {
@@ -193,11 +210,17 @@
 					this.ApiData.Required.industry_id = this.fuyeArr[Number(event.detail.value)].industry_id
 					this.fuye= this.fuyeArr[Number(event.detail.value)].name
 			},
+			
 			// 省份选择
 			regionClick(event) {
-				console.log(event);
 				this.ApiData.Required.adcode = Number(this.HyArr[Number(event.detail.value)].value);
 				this.diqu = this.HyArr[Number(event.detail.value)].text;
+				this.dqfyArr = this.HyArr[Number(event.detail.value)].children; 
+			},
+			dqfyClick(event){
+				console.log(event)
+				this.ApiData.Required.adcode = this.dqfyArr[Number(event.detail.value)].value
+				this.dqfy= this.dqfyArr[Number(event.detail.value)].text
 			},
 			forClick1(event) {
 
@@ -237,7 +260,7 @@
 			},
 			// 付选清空
 			fxAjaxApi() {
-				console.log(1);
+				this.fushu=0;
 				var _this = this;
 				uni.request({
 					url: this.ApiUrl + "api/v5/Tik_Tok/get_industry_in",
